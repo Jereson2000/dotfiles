@@ -1,13 +1,12 @@
-indicator
 indicator-caps-lock
 ignore-empty-password
 
 # Font
-font=Anonymice Pro Nerd Font
+font=FiraCode Nerd Font Mono
 font-size=32
 
 # Background
-color=000000
+color=8c8c8c
 text-color=FFFFFF
 
 #Clock
@@ -16,10 +15,10 @@ timestr=%R
 datestr=%d/%m/%Y
 
 # Wallpaper
-#scaling=center
-#image=/home/janne/Pictures/wallpapers/dwarf_fortress.jpg
-#indicator-x-position=2400
-#indicator-y-position=200
+image=/home/jereson/Pictures/lockscreen.jpg
+scaling=center
+indicator-x-position=2400
+indicator-y-position=200
 
 # Colors
 # Normal
