@@ -75,4 +75,5 @@ window#waybar {
 #battery {
   background: #1a1a1a;
   color: #859900;
+  padding-right: 5px;
 }
