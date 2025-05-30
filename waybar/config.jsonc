@@ -1,44 +1,59 @@
 // -*- mode: json -*-
-{
-  "layer": "top",
-  "position": "top",
+[
+  {
+    "layer": "top",
+    "position": "top",
+    "output": "DVI-I-1",
 
-  "include": [
-    "./modules/arrows.jsonc",
-    "./modules/battery.jsonc",
-    "./modules/bluetooth.jsonc",
-    "./modules/bluetooth.jsonc",
-    "./modules/clock.jsonc",
-    "./modules/network.jsonc",
-    "./modules/pulseaudio.jsonc",
-    "./modules/workspaces.jsonc",
-  ],
+    "include": [
+      "~/.config/waybar/modules/arrows.jsonc",
+      "~/.config/waybar/modules/battery.jsonc",
+      "~/.config/waybar/modules/bluetooth.jsonc",
+      "~/.config/waybar/modules/bluetooth.jsonc",
+      "~/.config/waybar/modules/clock.jsonc",
+      "~/.config/waybar/modules/network.jsonc",
+      "~/.config/waybar/modules/pulseaudio.jsonc",
+      "~/.config/waybar/modules/workspaces.jsonc",
+    ],
 
-  "modules-left": ["hyprland/workspaces", "custom/right-arrow-dark"],
+    "modules-left": ["hyprland/workspaces", "custom/right-arrow-dark"],
 
-  "modules-center": [
-    "custom/left-arrow-dark",
-    "clock#1",
-    "custom/left-arrow-light",
-    "custom/left-arrow-dark",
-    "clock#2",
-    "custom/right-arrow-dark",
-    "custom/right-arrow-light",
-    "clock#3",
-    "custom/right-arrow-dark",
-  ],
+    "modules-center": [
+      "custom/left-arrow-dark",
+      "clock#1",
+      "custom/left-arrow-light",
+      "custom/left-arrow-dark",
+      "clock#2",
+      "custom/right-arrow-dark",
+      "custom/right-arrow-light",
+      "clock#3",
+      "custom/right-arrow-dark",
+    ],
 
-  "modules-right": [
-    "custom/left-arrow-dark",
-    "pulseaudio",
-    "custom/left-arrow-light",
-    "custom/left-arrow-dark",
-    "network",
-    "custom/left-arrow-light",
-    "custom/left-arrow-dark",
-    "bluetooth",
-    "custom/left-arrow-light",
-    "custom/left-arrow-dark",
-    "battery",
-  ],
-}
+    "modules-right": [
+      "custom/left-arrow-dark",
+      "pulseaudio",
+      "custom/left-arrow-light",
+      "custom/left-arrow-dark",
+      "network",
+      "custom/left-arrow-light",
+      "custom/left-arrow-dark",
+      "bluetooth",
+      "custom/left-arrow-light",
+      "custom/left-arrow-dark",
+      "battery",
+    ],
+  },
+  {
+    "layer": "top",
+    "position": "top",
+    "output": "DVI-I-2",
+
+    "include": [
+      "~/.config/waybar/modules/arrows.jsonc",
+      "~/.config/waybar/modules/workspaces.jsonc",
+    ],
+
+    "modules-left": ["hyprland/workspaces", "custom/right-arrow-dark"],
+  },
+]
