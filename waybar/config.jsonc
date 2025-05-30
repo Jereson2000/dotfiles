@@ -10,7 +10,6 @@
     "./modules/bluetooth.jsonc",
     "./modules/clock.jsonc",
     "./modules/network.jsonc",
-    "./modules/power.jsonc",
     "./modules/pulseaudio.jsonc",
     "./modules/workspaces.jsonc",
   ],
@@ -41,7 +40,5 @@
     "custom/left-arrow-light",
     "custom/left-arrow-dark",
     "battery",
-    "custom/left-arrow-light",
-    "custom/power",
   ],
 }
