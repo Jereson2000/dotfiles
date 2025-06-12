@@ -711,7 +711,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettier', -- Used to format Javascript related files.
-        'black',
+        'black', --Used to format python files.
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
