@@ -201,7 +201,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.keymap.set('n', '<leader>n', '<Cmd>Neotree toggle<CR>')
+vim.keymap.set('n', '<leader>n', '<Cmd>Neotree toggle position=right<CR>')
 
 -- INFO: [[ Install `lazy.nvim` plugin manager ]]
 
