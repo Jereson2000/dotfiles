@@ -201,6 +201,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.keymap.set('n', '<leader>n', '<Cmd>Neotree toggle<CR>')
+
 -- INFO: [[ Install `lazy.nvim` plugin manager ]]
 
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -981,7 +983,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
