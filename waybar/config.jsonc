@@ -3,7 +3,7 @@
   {
     "layer": "top",
     "position": "top",
-    "output": "DVI-I-1",
+    "output": "DP-7",
 
     "include": [
       "~/.config/waybar/modules/arrows.jsonc",
@@ -47,7 +47,7 @@
   {
     "layer": "top",
     "position": "top",
-    "output": "DVI-I-2",
+    "output": "DP-6",
 
     "include": [
       "~/.config/waybar/modules/arrows.jsonc",
