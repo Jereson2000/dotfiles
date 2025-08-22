@@ -1,7 +1,6 @@
 show=drun
 height=40%
 width=30%
-location=top
 allow_images=true
 term=kitty
 insensitive=true
