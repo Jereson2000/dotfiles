@@ -1,6 +1,10 @@
 {
   "hyprland/workspaces": {
     "disable-scroll": true,
-    "format": "{id}",
+    "format": "{icon}",
+    "format-icons": {
+      "active": "",
+      "default": "",
+    },
   },
 }
