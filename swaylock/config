@@ -3,14 +3,11 @@ ignore-empty-password
 
 # Font
 font=FiraCode Nerd Font Mono
-font-size=32
+font-size=16
 
 # Background
 color=8c8c8c
 text-color=FFFFFF
-
-# Wallpaper
-image=/home/jereson/Pictures/lockscreen.jpg
 
 # Colors
 # Normal
