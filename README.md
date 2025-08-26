@@ -16,3 +16,7 @@ This is a more of a reminder to me what to do.
    - wofi
 
 3. symlink all the used component configs to ~/.config/ (or to where ever you have set ur applications config path)
+
+## Development
+
+- install pre-commit from pip
