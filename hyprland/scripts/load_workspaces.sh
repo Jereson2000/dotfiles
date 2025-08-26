@@ -8,4 +8,3 @@ do
 done
 
 hyprctl notify -1 3000 "rgb(42f54e)" "Workspaces loaded."
-
