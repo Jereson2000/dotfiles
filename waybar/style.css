@@ -29,20 +29,17 @@ window#waybar {
 }
 
 #workspaces button {
-  padding: 0px 5px 0px;
-  color: #fdf6e3;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  color: #6b6b6b;
 }
+
+#workspaces button.visible {
+  color: #ffffff;
+}
+
 #workspaces button.active {
   color: #268bd2;
-}
-#workspaces button:hover {
-  box-shadow: inherit;
-  text-shadow: inherit;
-}
-#workspaces button:hover {
-  background: #1a1a1a;
-  border: #1a1a1a;
-  padding: 0 3px;
 }
 
 #clock.1 {
