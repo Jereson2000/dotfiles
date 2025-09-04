@@ -4,10 +4,10 @@
 #: individual font faces and even specify special fonts for particular
 #: characters.
 
-# font_family      monospace
-# bold_font        auto
-# italic_font      auto
-# bold_italic_font auto
+font_family      family="FiraCode Nerd Font Mono"
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
 
 #: You can specify different fonts for the bold/italic/bold-italic
 #: variants. The easiest way to select fonts is to run the `kitten
@@ -1305,7 +1305,7 @@ enable_audio_bell no
 
 #: The foreground and background colors.
 
-background_opacity 0.5
+background_opacity 0.6
 
 #: The opacity of the background. A number between zero and one, where
 #: one is opaque and zero is fully transparent. This will only work if
@@ -2771,3 +2771,17 @@ map cmd+n       new_os_window_with_cwd
 #: }}}
 
 #: }}}
+
+
+# BEGIN_KITTY_FONTS
+font_family      family="FiraCode Nerd Font Mono"
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+# END_KITTY_FONTS
+
+
+# BEGIN_KITTY_THEME
+# 3024 Night
+include current-theme.conf
+# END_KITTY_THEME

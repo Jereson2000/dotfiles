@@ -2,7 +2,7 @@ hyprctl notify -1 1000 "rgb(4257f5)" "Loading workspaces..."
 
 sleep 1
 
-for i in $(seq 6 -1 1);
+for i in $(seq 7 -1 1);
 do
 	hyprctl dispatch workspace "$i"
 done
