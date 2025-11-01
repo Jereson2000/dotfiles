@@ -121,7 +121,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- INFO: [[ Configure and install plugins ]]
+-- INFO: [[ Configure and install plugins via Lazy ]]
 
 --  To check the current status of your plugins, run
 --    :Lazy
@@ -575,7 +575,11 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
-        --
+
+        r_language_server = {
+          cmd = { '/usr/bin/R', '--no-echo', '-e', 'languageserver::run()' },
+          filetypes = { 'r', 'rmd', 'rmarkdown' },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -617,6 +621,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'prettier', -- Used to format Javascript related files.
         'black', --Used to format python files.
+        'jupytext',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -669,10 +674,12 @@ require('lazy').setup({
         javascriptreact = { 'prettier' },
         typescript = { 'prettier' },
         typescriptreact = { 'prettier' },
+        markdown = { 'prettier' },
         html = { 'prettier' },
         css = { 'prettier' },
         json = { 'prettier' },
         jsonc = { 'prettier' },
+        quarto = { 'injected' },
       },
     },
   },
@@ -790,8 +797,8 @@ require('lazy').setup({
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('oneokai').setup {
-        transparent = true,
-        style = 'deep',
+        transparent = false,
+        style = 'darker',
         styles = {
           comments = { italic = false }, -- Disable italics in comments
         },
@@ -829,6 +836,8 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      require('mini.pairs').setup()
+
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
@@ -857,7 +866,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'r' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -898,6 +907,55 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   -- { import = 'custom.plugins' },
+  -- INFO: Quarto
+  {
+    'quarto-dev/quarto-nvim',
+    dependencies = {
+      'jmbuhr/otter.nvim',
+      'jpalardy/vim-slime',
+    },
+    config = function()
+      local quarto = require 'quarto'
+
+      -- INFO: Setup
+      quarto.setup {
+        debug = false,
+        closePreviewOnExit = true,
+        lspFeatures = {
+          enabled = true,
+          chunks = 'curly',
+          languages = { 'r', 'python', 'julia', 'bash', 'html' },
+          diagnostics = {
+            enabled = false,
+            triggers = { 'BufWritePost' },
+          },
+          completion = {
+            enabled = true,
+          },
+        },
+        codeRunner = {
+          enabled = true,
+          default_method = 'slime', -- "molten", "slime", "iron" or <function>
+          -- Takes precedence over `default_method`
+          never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
+        },
+      }
+
+      -- INFO: Keymaps
+      vim.keymap.set('n', '<leader>qo', quarto.quartoPreview, { desc = 'Quarto: Open Preview' })
+      vim.keymap.set('n', '<leader>qc', quarto.quartoClosePreview, { desc = 'Quarto: Close Preview' })
+
+      local runner = require 'quarto.runner'
+      vim.keymap.set('n', '<leader>qrc', runner.run_cell, { desc = 'Quarto: run cell', silent = true })
+      vim.keymap.set('n', '<leader>qra', runner.run_above, { desc = 'Quarto: run cell and above', silent = true })
+      vim.keymap.set('n', '<leader>qrA', runner.run_all, { desc = 'Quarto: run all cells', silent = true })
+      vim.keymap.set('n', '<leader>qrl', runner.run_line, { desc = 'Quarto: run line', silent = true })
+      vim.keymap.set('v', '<leader>qr', runner.run_range, { desc = 'Quarto: run visual range', silent = true })
+      vim.keymap.set('n', '<leader>qRa', function()
+        runner.run_all(true)
+      end, { desc = 'Quarto: run all cells of all languages', silent = true })
+    end,
+  },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
