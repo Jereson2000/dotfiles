@@ -8,11 +8,6 @@ require 'keymaps'
 
 -- INFO: [[ Basic Autocommands ]]
 
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -489,12 +484,6 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
-
-        r_language_server = {
-          cmd = { '/usr/bin/R', '--no-echo', '-e', 'languageserver::run()' },
-          filetypes = { 'r', 'rmd', 'rmarkdown' },
-        },
-
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -535,7 +524,6 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'prettier', -- Used to format Javascript related files.
         'black', --Used to format python files.
-        'jupytext',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -593,7 +581,6 @@ require('lazy').setup({
         css = { 'prettier' },
         json = { 'prettier' },
         jsonc = { 'prettier' },
-        quarto = { 'injected' },
       },
     },
   },
@@ -821,55 +808,6 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   -- { import = 'custom.plugins' },
-  -- INFO: Quarto
-  {
-    'quarto-dev/quarto-nvim',
-    dependencies = {
-      'jmbuhr/otter.nvim',
-      'jpalardy/vim-slime',
-    },
-    config = function()
-      local quarto = require 'quarto'
-
-      -- INFO: Setup
-      quarto.setup {
-        debug = false,
-        closePreviewOnExit = true,
-        lspFeatures = {
-          enabled = true,
-          chunks = 'curly',
-          languages = { 'r', 'python', 'julia', 'bash', 'html' },
-          diagnostics = {
-            enabled = false,
-            triggers = { 'BufWritePost' },
-          },
-          completion = {
-            enabled = true,
-          },
-        },
-        codeRunner = {
-          enabled = true,
-          default_method = 'slime', -- "molten", "slime", "iron" or <function>
-          -- Takes precedence over `default_method`
-          never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
-        },
-      }
-
-      -- INFO: Keymaps
-      vim.keymap.set('n', '<leader>qo', quarto.quartoPreview, { desc = 'Quarto: Open Preview' })
-      vim.keymap.set('n', '<leader>qc', quarto.quartoClosePreview, { desc = 'Quarto: Close Preview' })
-
-      local runner = require 'quarto.runner'
-      vim.keymap.set('n', '<leader>qrc', runner.run_cell, { desc = 'Quarto: run cell', silent = true })
-      vim.keymap.set('n', '<leader>qra', runner.run_above, { desc = 'Quarto: run cell and above', silent = true })
-      vim.keymap.set('n', '<leader>qrA', runner.run_all, { desc = 'Quarto: run all cells', silent = true })
-      vim.keymap.set('n', '<leader>qrl', runner.run_line, { desc = 'Quarto: run line', silent = true })
-      vim.keymap.set('v', '<leader>qr', runner.run_range, { desc = 'Quarto: run visual range', silent = true })
-      vim.keymap.set('n', '<leader>qRa', function()
-        runner.run_all(true)
-      end, { desc = 'Quarto: run all cells of all languages', silent = true })
-    end,
-  },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
