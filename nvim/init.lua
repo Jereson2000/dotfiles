@@ -292,6 +292,17 @@ require('lazy').setup({
         pyright = {},
         rust_analyzer = {},
         ts_ls = {},
+        r_language_server = {
+          filetypes = { 'r', 'rmd', 'rmarkdown' }, -- not directly using it for quarto (as that is handled by otter and often contains more languanges than just R)
+          settings = {
+            r = {
+              lsp = {
+                rich_documentation = true,
+              },
+            },
+          },
+        },
+        texlab = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -314,6 +325,8 @@ require('lazy').setup({
         'stylua',
         'prettier',
         'black',
+        'jupytext',
+        'tree-sitter-cli',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -469,14 +482,59 @@ require('lazy').setup({
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'r' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'r', 'yaml', 'latex' },
       auto_install = true,
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { 'ruby' },
+        additional_vim_regex_highlighting = false,
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true },
     },
+  },
+
+  -- INFO: Quarto
+
+  {
+    'quarto-dev/quarto-nvim',
+    dev = false,
+    dependencies = {
+      'jmbuhr/otter.nvim',
+      'jpalardy/vim-slime',
+    },
+    config = function()
+      local quarto = require 'quarto'
+      quarto.setup {
+        lspFeatures = {
+          enabled = true,
+          chunks = 'curly',
+          languages = { 'r' },
+          diagnostics = {
+            enabled = false,
+          },
+          completion = {
+            enabled = true,
+          },
+        },
+        codeRunner = {
+          enabled = true,
+          default_method = 'slime', -- "molten", "slime", "iron" or <function>
+          never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
+        },
+      }
+
+      vim.keymap.set('n', '<leader>qop', quarto.quartoPreview, { desc = 'Quarto: Open preview', silent = true })
+      vim.keymap.set('n', '<leader>qcp', quarto.quartoClosePreview, { desc = 'Quarto: Close preview', silent = true })
+
+      local runner = require 'quarto.runner'
+      vim.keymap.set('n', '<leader>qrc', runner.run_cell, { desc = 'run cell', silent = true })
+      vim.keymap.set('n', '<leader>qra', runner.run_above, { desc = 'run cell and above', silent = true })
+      vim.keymap.set('n', '<leader>qrA', runner.run_all, { desc = 'run all cells', silent = true })
+      vim.keymap.set('n', '<leader>qrl', runner.run_line, { desc = 'run line', silent = true })
+      vim.keymap.set('v', '<leader>qr', runner.run_range, { desc = 'run visual range', silent = true })
+      vim.keymap.set('n', '<leader>qRA', function()
+        runner.run_all(true)
+      end, { desc = 'run all cells of all languages', silent = true })
+    end,
   },
 
   require 'kickstart.plugins.neo-tree',
