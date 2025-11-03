@@ -1,3 +1,0 @@
-[submodule "nvim-datascience"]
-	path = nvim-datascience
-	url = git@github.com:jmbuhr/nvim-config.git
