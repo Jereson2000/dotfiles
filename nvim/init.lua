@@ -30,12 +30,13 @@ vim.opt.rtp:prepend(lazypath)
 
 -- INFO: [[ Configure and install plugins via Lazy ]]
 
--- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-  -- INFO: vim-sleuth
+
+  -- INFO: vim-sleuth: Automatically adjusts 'shiftwidth' and 'expandtab' based on the current file
   'tpope/vim-sleuth',
 
-  -- INFO: gitsigns
+  -- INFO: gitsigns: Shows git signs and has other functionality related to git project in neovim
+
   {
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -49,7 +50,9 @@ require('lazy').setup({
     },
   },
 
-  -- INFO: which-key
+  -- INFO: which-key: Helps reminding keymaps by showing the keys that can be entered when using keymaps.
+  -- It is the thing that opens when you press <space>. Very usefull.
+
   {
     'folke/which-key.nvim',
     event = 'VimEnter',
@@ -96,7 +99,9 @@ require('lazy').setup({
       },
     },
   },
-  -- INFO: Telescope
+
+  -- INFO: Telescope: fuzzy finder for files, text, etc.
+
   {
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -116,7 +121,6 @@ require('lazy').setup({
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
-      -- INFO: [[ Configure Telescope ]]
       require('telescope').setup {
         extensions = {
           ['ui-select'] = {
@@ -160,7 +164,7 @@ require('lazy').setup({
     end,
   },
 
-  -- INFO: LSP Plugins
+  -- INFO: Lazydev: is a plugin that properly configures LuaLS for editing your Neovim config by lazily updating your workspace libraries.
 
   {
     'folke/lazydev.nvim',
@@ -172,18 +176,19 @@ require('lazy').setup({
     },
   },
 
-  -- INFO: Main LSP Configuration
+  -- INFO: Nvim-lspconfig: Collection of LSP server configuration.
+  -- Handles A LOT of stuff like installing mason configuring LSP servers
+  -- etc even though it is mason that does those things but whatever.
 
+  -- TODO: This need first to be moved into its own file and then refactored better
+  -- so you actually can see what part does what.
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-
       { 'j-hui/fidget.nvim', opts = {} },
-
       'saghen/blink.cmp',
     },
     config = function()
@@ -259,8 +264,7 @@ require('lazy').setup({
         end,
       })
 
-      -- INFO: [[ Diagnostic Config ]]
-      -- See :help vim.diagnostic.Opts
+      -- INFO: Diagnostic Config
 
       vim.diagnostic.config {
         severity_sort = true,
@@ -288,12 +292,15 @@ require('lazy').setup({
           end,
         },
       }
+
+      -- INFO: LSP servers. Installed with Mason.
+
       local servers = {
         pyright = {},
         rust_analyzer = {},
         ts_ls = {},
         r_language_server = {
-          filetypes = { 'r', 'rmd', 'rmarkdown' }, -- not directly using it for quarto (as that is handled by otter and often contains more languanges than just R)
+          filetypes = { 'r', 'rmd', 'rmarkdown' },
           settings = {
             r = {
               lsp = {
@@ -302,7 +309,6 @@ require('lazy').setup({
             },
           },
         },
-        texlab = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -313,6 +319,8 @@ require('lazy').setup({
           },
         },
       }
+
+      -- INFO: Mason lspconfig.
 
       ---@type MasonLspconfigSettings
       ---@diagnostic disable-next-line: missing-fields
@@ -336,6 +344,9 @@ require('lazy').setup({
       end
     end,
   },
+
+  -- INFO: Conform: Formatter plugin for nvim. The actual formatters are installed with mason
+  -- but this handles configuring them.
 
   {
     'stevearc/conform.nvim',
@@ -380,7 +391,7 @@ require('lazy').setup({
     },
   },
 
-  -- INFO: Autocompletion
+  -- INFO: Blink: Handles autocompletion in files.
 
   {
     'saghen/blink.cmp',
@@ -454,7 +465,7 @@ require('lazy').setup({
 
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  -- INFO: Mini
+  -- INFO: Mini: random extra stuff for neovim.
 
   {
     'echasnovski/mini.nvim',
@@ -475,7 +486,7 @@ require('lazy').setup({
     end,
   },
 
-  --INFO: treesitter
+  --INFO: Treesitter: Provides things such as highlighting in files.
 
   {
     'nvim-treesitter/nvim-treesitter',
@@ -492,8 +503,8 @@ require('lazy').setup({
     },
   },
 
-  -- INFO: Quarto
-
+  -- INFO: Quarto: parsing of qmd files and rendering. Can also handle rmd files.
+  -- TODO: Switch slime to own block.
   {
     'quarto-dev/quarto-nvim',
     dev = false,
@@ -537,6 +548,7 @@ require('lazy').setup({
     end,
   },
 
+  --INFO: Neotree: filetree plugin for easy navigation.
   require 'kickstart.plugins.neo-tree',
 }, {
   ui = {
