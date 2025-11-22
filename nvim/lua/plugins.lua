@@ -283,7 +283,7 @@ require('lazy').setup({
         rust_analyzer = {},
         ts_ls = {},
         texlab = {
-          filetypes = { 'latex', 'tex', 'plaintex', 'quarto' },
+          filetypes = { 'latex', 'tex', 'plaintex' },
         },
         r_language_server = {
           filetypes = { 'r', 'rmd', 'rmarkdown' },
@@ -499,9 +499,6 @@ require('lazy').setup({
         'jmbuhr/otter.nvim',
         opts = {},
       },
-      'jpalardy/vim-slime',
-      'neovim/nvim-lspconfig',
-      'nvim-treesitter/nvim-treesitter',
     },
     config = function()
       local quarto = require 'quarto'
@@ -526,13 +523,6 @@ require('lazy').setup({
 
       vim.keymap.set('n', '<leader>qo', quarto.quartoPreview, { desc = 'Quarto: Open preview', silent = true })
       vim.keymap.set('n', '<leader>qc', quarto.quartoClosePreview, { desc = 'Quarto: Close preview', silent = true })
-
-      local runner = require 'quarto.runner'
-      vim.keymap.set('n', '<leader>qrc', runner.run_cell, { desc = 'Run cell', silent = true })
-      vim.keymap.set('n', '<leader>qra', runner.run_above, { desc = 'Run cell and above', silent = true })
-      vim.keymap.set('n', '<leader>qrA', runner.run_all, { desc = 'Run all cells', silent = true })
-      vim.keymap.set('n', '<leader>qrl', runner.run_line, { desc = 'Run line', silent = true })
-      vim.keymap.set('v', '<leader>qr', runner.run_range, { desc = 'Run visual range', silent = true })
     end,
   },
 
