@@ -26,6 +26,15 @@ vim.opt.showmode = false
 -- Enable break indent
 vim.opt.breakindent = true
 
+-- Enable text wrapping
+vim.opt.wrap = true
+
+-- Break at word boundaries
+vim.opt.linebreak = true
+
+-- Symbol for wrapped lines
+vim.opt.showbreak = '↳ '
+
 -- Save undo history
 vim.opt.undofile = true
 

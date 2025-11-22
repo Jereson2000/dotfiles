@@ -2,7 +2,7 @@
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- INFO: Open diagnostics
-vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Open [d]iagnostic Quickfix list' })
 
 -- INFO: Exit terminal mode by pressing <Esc> two times
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
@@ -14,4 +14,4 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- INFO: Toggle Neotree
-vim.keymap.set('n', '<leader>n', '<Cmd>Neotree toggle position=right<CR>', { desc = 'Toggle Neotree' })
+vim.keymap.set('n', '<leader>n', '<Cmd>Neotree toggle position=right<CR>', { desc = 'Toggle [N]eotree' })

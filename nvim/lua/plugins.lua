@@ -77,6 +77,7 @@ require('lazy').setup({
       spec = {
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
+        { '<leader>q', group = '[Q]uarto' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
@@ -282,7 +283,7 @@ require('lazy').setup({
         rust_analyzer = {},
         ts_ls = {},
         texlab = {
-          filetypes = { 'tex', 'plaintex', 'latex', 'quarto' },
+          filetypes = { 'latex', 'tex', 'plaintex', 'quarto' },
         },
         r_language_server = {
           filetypes = { 'r', 'rmd', 'rmarkdown' },
@@ -315,9 +316,9 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(lsp_servers or {})
 
       vim.list_extend(ensure_installed, {
-        'stylua',
-        'prettier',
-        'black',
+        'stylua', -- lua
+        'prettier', -- js, ts, etc..
+        'black', -- python
         'jupytext',
         'tree-sitter-cli',
       })
@@ -436,7 +437,7 @@ require('lazy').setup({
       ---@diagnostic disable-next-line: missing-fields
       require('oneokai').setup {
         transparent = false,
-        style = 'darker',
+        style = 'darkplus',
         styles = {
           comments = { italic = false },
         },
@@ -478,11 +479,12 @@ require('lazy').setup({
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'r', 'yaml', 'latex' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'r', 'yaml' },
       auto_install = true,
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
+        disable = { 'latex' },
       },
       indent = { enable = true },
     },
@@ -492,9 +494,11 @@ require('lazy').setup({
   -- TODO: Switch slime to own block.
   {
     'quarto-dev/quarto-nvim',
-    dev = false,
     dependencies = {
-      'jmbuhr/otter.nvim',
+      {
+        'jmbuhr/otter.nvim',
+        opts = {},
+      },
       'jpalardy/vim-slime',
       'neovim/nvim-lspconfig',
       'nvim-treesitter/nvim-treesitter',
@@ -529,9 +533,6 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>qrA', runner.run_all, { desc = 'Run all cells', silent = true })
       vim.keymap.set('n', '<leader>qrl', runner.run_line, { desc = 'Run line', silent = true })
       vim.keymap.set('v', '<leader>qr', runner.run_range, { desc = 'Run visual range', silent = true })
-      vim.keymap.set('n', '<leader>qRA', function()
-        runner.run_all(true)
-      end, { desc = 'run all cells of all languages', silent = true })
     end,
   },
 
@@ -548,9 +549,29 @@ require('lazy').setup({
         {
           '<leader>p',
           ':lua require("nabla").popup()<cr>',
-          desc = 'Nabla: PopUp',
+          desc = 'Inline math [p]review',
         },
       }
+    end,
+  },
+
+  {
+    'lervag/vimtex',
+    lazy = false, -- we don't want to lazy load VimTeX
+    init = function()
+      -- VimTeX configuration goes here, e.g.
+      vim.g.vimtex_view_method = 'zathura'
+      vim.g.vimtex_compiler_latexmk = {
+        out_dir = 'build',
+        options = {
+          '-pdf',
+          '-shell-escape',
+          '-verbose',
+          '-file-line-error',
+          '-synctex=1', -- <-- This enables SyncTeX
+        },
+      }
+      vim.g.vimtex_quickfix_open_on_warning = 0
     end,
   },
 
