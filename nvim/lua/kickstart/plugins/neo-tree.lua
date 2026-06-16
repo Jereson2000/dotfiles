@@ -13,7 +13,7 @@ return {
   },
   lazy = false,
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { '<leader>n', ':Neotree toggle position=right<CR>', desc = 'NeoTree toggle', silent = true },
   },
   ---@module 'neo-tree'
   ---@type neotree.Config

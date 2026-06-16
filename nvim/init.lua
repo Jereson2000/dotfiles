@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ';'
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -218,7 +218,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
--- [[ Basic Autocommands ]]
+-- NOTE: [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
@@ -600,20 +600,9 @@ require('lazy').setup({
       --  See `:help lsp-config` for information about keys and how to configure
       ---@type table<string, vim.lsp.Config>
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-
-        stylua = {}, -- Used to format Lua code
-
-        -- Special Lua Config, as recommended by neovim help docs
+        pyright = {},
+        stylua = {},
+        ts_ls = {},
         lua_ls = {
           on_init = function(client)
             client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
@@ -658,6 +647,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         -- You can add other tools here that you want Mason to install
+        black,
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -688,8 +678,9 @@ require('lazy').setup({
       format_on_save = function(bufnr)
         -- You can specify filetypes to autoformat on save here:
         local enabled_filetypes = {
-          -- lua = true,
-          -- python = true,
+          lua = true,
+          python = true,
+          javascript = true,
         }
         if enabled_filetypes[vim.bo[bufnr].filetype] then
           return { timeout_ms = 500 }
@@ -702,12 +693,10 @@ require('lazy').setup({
       },
       -- You can also specify external formatters in here.
       formatters_by_ft = {
-        -- rust = { 'rustfmt' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        python = { 'black' },
+        latex = { 'tex-fmt' },
+        javascript = { 'prettier' },
+        html = { 'prettier' },
       },
     },
   },
@@ -805,7 +794,6 @@ require('lazy').setup({
     },
   },
 
-
   {
     'AxelGard/oneokai.nvim',
     priority = 1000,
@@ -885,7 +873,7 @@ require('lazy').setup({
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
     config = function()
       -- ensure basic parser are installed
-      local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'python' }
       require('nvim-treesitter').install(parsers)
 
       ---@param buf integer
@@ -920,8 +908,8 @@ require('lazy').setup({
           local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
 
           if vim.tbl_contains(installed_parsers, language) then
-            -- enable the parser if it is installed
-            treesitter_try_attach(buf, language)
+            -- enable the parser if it is installed (except latex becauce vimtex)
+            if language ~= 'latex' then treesitter_try_attach(buf, language) end
           elseif vim.tbl_contains(available_parsers, language) then
             -- if a parser is available in `nvim-treesitter` auto install it, and enable it after the installation is done
             require('nvim-treesitter').install(language):await(function() treesitter_try_attach(buf, language) end)
@@ -955,8 +943,8 @@ require('lazy').setup({
   },
 
   {
-    "R-nvim/R.nvim",
-     -- Only required if you also set defaults.lazy = true
+    'R-nvim/R.nvim',
+    -- Only required if you also set defaults.lazy = true
     lazy = false,
     -- R.nvim is still young and we may make some breaking changes from time
     -- to time (but also bug fixes all the time). If configuration stability
@@ -964,41 +952,41 @@ require('lazy').setup({
     -- it and try the latest version before reporting an issue:
     -- version = "~0.1.0"
     config = function()
-        -- Create a table with the options to be passed to setup()
-        ---@type RConfigUserOpts
-        local opts = {
-            hook = {
-                on_filetype = function()
-                    vim.api.nvim_buf_set_keymap(0, "n", "<Enter>", "<Plug>RDSendLine", {})
-                    vim.api.nvim_buf_set_keymap(0, "v", "<Enter>", "<Plug>RSendSelection", {})
-                end
-            },
-            R_args = {"--quiet", "--no-save"},
-            min_editor_width = 72,
-            rconsole_width = 78,
-            objbr_mappings = { -- Object browser keymap
-                c = 'class', -- Call R functions
-                ['<localleader>gg'] = 'head({object}, n = 15)', -- Use {object} notation to write arbitrary R code.
-                v = function()
-                    -- Run lua functions
-                    require('r.browser').toggle_view()
-                end
-            },
-            disable_cmds = {
-                "RClearConsole",
-                "RCustomStart",
-                "RSPlot",
-                "RSaveClose",
-            },
-        }
-        -- Check if the environment variable "R_AUTO_START" exists.
-        -- If using fish shell, you could put in your config.fish:
-        -- alias r "R_AUTO_START=true nvim"
-        if vim.env.R_AUTO_START == "true" then
-            opts.auto_start = "on startup"
-            opts.objbr_auto_start = true
-        end
-        require("r").setup(opts)
+      -- Create a table with the options to be passed to setup()
+      ---@type RConfigUserOpts
+      local opts = {
+        hook = {
+          on_filetype = function()
+            vim.api.nvim_buf_set_keymap(0, 'n', '<Enter>', '<Plug>RDSendLine', {})
+            vim.api.nvim_buf_set_keymap(0, 'v', '<Enter>', '<Plug>RSendSelection', {})
+          end,
+        },
+        R_args = { '--quiet', '--no-save' },
+        min_editor_width = 72,
+        rconsole_width = 78,
+        objbr_mappings = { -- Object browser keymap
+          c = 'class', -- Call R functions
+          ['<localleader>gg'] = 'head({object}, n = 15)', -- Use {object} notation to write arbitrary R code.
+          v = function()
+            -- Run lua functions
+            require('r.browser').toggle_view()
+          end,
+        },
+        disable_cmds = {
+          'RClearConsole',
+          'RCustomStart',
+          'RSPlot',
+          'RSaveClose',
+        },
+      }
+      -- Check if the environment variable "R_AUTO_START" exists.
+      -- If using fish shell, you could put in your config.fish:
+      -- alias r "R_AUTO_START=true nvim"
+      if vim.env.R_AUTO_START == 'true' then
+        opts.auto_start = 'on startup'
+        opts.objbr_auto_start = true
+      end
+      require('r').setup(opts)
     end,
   },
 
