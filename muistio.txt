@@ -1,1 +1,0 @@
-- Erittele lazylla asennettavien pakettien conffit omiin tiedostoihinsa.
